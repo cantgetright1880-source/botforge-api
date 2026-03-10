@@ -1,5 +1,6 @@
 // BotForge Stripe Webhook
 // Handles payment events from Stripe
+// Vercel serverless function
 
 const { createClient } = require('@supabase/supabase-js');
 
@@ -24,12 +25,32 @@ module.exports = async (req, res) => {
         return res.status(405).json({ error: 'Method not allowed' });
     }
     
+    // Get raw body for Stripe signature verification
+    // Vercel provides rawBody property on the request for webhook verification
+    let rawBody = req.rawBody;
+    
+    // Fallback: try to reconstruct from body if rawBody not available
+    if (!rawBody && req.body) {
+        if (Buffer.isBuffer(req.body)) {
+            rawBody = req.body.toString('utf8');
+        } else if (typeof req.body === 'string') {
+            rawBody = req.body;
+        } else if (typeof req.body === 'object') {
+            rawBody = JSON.stringify(req.body);
+        }
+    }
+    
+    if (!rawBody) {
+        console.error('No body found in request');
+        return res.status(400).send('Webhook Error: No body found');
+    }
+    
     const sig = req.headers['stripe-signature'];
     let event;
     
     try {
         event = stripe.webhooks.constructEvent(
-            req.body,
+            rawBody,
             sig,
             process.env.STRIPE_WEBHOOK_SECRET
         );

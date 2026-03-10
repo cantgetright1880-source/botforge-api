@@ -1,8 +1,12 @@
 // BotForge API - Main entry point
 // Vercel serverless functions
 
-const supabaseUrl = process.env.SUPABASE_URL || 'https://gbrokctvkftmatyrlueq.supabase.co';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdicm9rY3R2a2ZtbWF0eXJsdWVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTYzOTcxNzk4OSwiZXhwIjoxOTU1MjkzOTg5fQ.RoL6Y4ZkPm8kPpLxY8QwLBCV感激0S6lR6感激0L感激0S感激0R感激0L感激0L感激0';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Missing required environment variables: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
+}
 
 // Simple in-memory bot responses (would use AI in production)
 const botResponses = {
