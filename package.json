@@ -1,0 +1,14 @@
+{
+  "name": "botforge-api",
+  "version": "1.0.0",
+  "description": "BotForge API - Vercel + Supabase",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "@supabase/functions-js": "^2.1.5",
+    "stripe": "^14.10.0"
+  }
+}
